@@ -64,9 +64,14 @@ const props = defineProps({
                                                     scope="col"
                                                     class="relative py-3.5 pl-3 pr-4 sm:pr-6"
                                                 >
-                                                    <span class="sr-only"
-                                                        >Editar</span
-                                                    >
+                                                    Imagem
+                                                </th>
+
+                                                <th
+                                                    scope="col"
+                                                    class="relative py-3.5 pl-3 pr-4 sm:pr-6 text-right"
+                                                >
+                                                    Ações
                                                 </th>
                                             </tr>
                                         </thead>
@@ -116,6 +121,20 @@ const props = defineProps({
                                                         class="text-indigo-600 hover:text-indigo-900"
                                                         >Editar</Link
                                                     >
+                                                </td>
+                                            </tr>
+
+                                            <tr
+                                                v-if="
+                                                    products &&
+                                                    products.length === 0
+                                                "
+                                            >
+                                                <td
+                                                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6"
+                                                    colspan="5"
+                                                >
+                                                    Nenhum produto cadastrado
                                                 </td>
                                             </tr>
                                         </tbody>

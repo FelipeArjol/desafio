@@ -32,7 +32,7 @@ function updateProduct() {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Adicionar Produto
+                Editar Produto
             </h2>
         </template>
 

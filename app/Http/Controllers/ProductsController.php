@@ -19,6 +19,7 @@ class ProductsController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'code' => $product->code,
+                    // 'image' => Storage::url($product->image),
                     'image' => asset('storage/' . $product->image)
                 ];
             })
@@ -29,15 +30,21 @@ class ProductsController extends Controller
         return Inertia::render('Products/Create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $image = Request::file('image')->store('products', 'public');
+        $image = $request->file('image')->store('products', 'public');
+
+        if (!$image) {
+            // Retorno de erro no upload
+        }
+
         Product::create([
-            'name' => Request::input('name'),
-            'code' => Request::input('code'),
-            'price' => Request::input('price'),
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'price' => $request->input('price'),
             'image' => $image,
         ]);
+
         return Redirect::route('products.index');
     }
 
@@ -49,26 +56,33 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function update(Product $product)
+    public function update(Product $product, Request $request)
     {
-        $image = $product->image;
-        if (Request::file('image')) {
+        $image = null;
+
+        if ($request->file('image')) {
             Storage::delete('public/' . $product->image);
-            $image = Request::file('image')->store('products', 'public');
+            $image = $request->file('image')->store('products', 'public');
         }
+
         $product->update([
-            'name' => Request::input('name'),
-            'code' => Request::input('code'),
-            'price' => Request::input('price'),
-            'image' => $image
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'price' => $request->input('price'),
+            'image' => $image ?? $product->image // null coalesce operator
         ]);
-        return Redirect::route('products.index');
+
+        return redirect()->route('products.index');
     }
 
     public function destroy(Product $product)
     {
         Storage::delete('public/' . $product->image);
+
         $product->delete();
-        return Redirect::route('products.index');
+
+        return redirect()->route('products.index');
+
+        // return redirect(route('products.index'));
     }
 }
